@@ -7,12 +7,12 @@ const Header = () => {
             
             {/* --------- Header Right (Image) --------- */}
             <div className='md:w-1/2 relative'>
-                <img className='w-3/3 md:absolute bottom-0 h-auto rounded-lg' src={assets.about_image} alt="" />
+                <img className='w-3/4 md:absolute bottom-0 h-auto rounded-lg' src={assets.about_image} alt="" />
             </div>
 
             {/* --------- Header Left (Info) --------- */}
             <div className='md:w-1/2 flex flex-col items-start justify-center gap-4 py-10 m-auto md:py-[10vw] md:mb-[-30px]'>
-                <p className='text-4xl md:text-4xl lg:text-6xl text-white font-bold leading-tight md:leading-tight lg:leading-tight'>
+                <p className='text-4xl md:text-4xl lg:text-6xl text-white font-semibold leading-tight md:leading-tight lg:leading-tight'>
                     Book Appointment <br /> With Trusted Doctors
                 </p>
                 
