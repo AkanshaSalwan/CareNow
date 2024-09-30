@@ -3,7 +3,7 @@ import { assets } from '../assets/assets';
 
 const Header = () => {
     return (
-        <div className='flex flex-col md:flex-row flex-wrap rounded-lg px-6 md:px-10 lg:px-20' style={{ backgroundColor: 'rgb(145 226 182)' }}>
+        <div className='flex flex-col md:flex-row flex-wrap rounded-lg px-6 md:px-10 lg:px-20' style={{ backgroundColor: '#3ED2D1' }}>
             
             {/* --------- Header Right (Image) --------- */}
             <div className='md:w-1/2 relative'>
