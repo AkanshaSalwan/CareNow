@@ -37,6 +37,7 @@ import Gynecologist from './Gynecologist.svg'
 import Neurologist from './Neurologist.svg'
 import Pediatricians from './Pediatricians.svg'
 import CareNow from './care_now.png'
+import gp from './gp.png'
 
 
 export const assets = {
