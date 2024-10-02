@@ -18,7 +18,7 @@ const Header = () => {
       {/* --------- Header Left (Info) --------- */}
       <div className='w-full md:w-1/2 flex flex-col items-center md:items-start justify-center gap-4 py-6 md:py-[10vw]'>
         <p className='text-3xl md:text-4xl lg:text-6xl text-white font-semibold leading-snug md:leading-tight lg:leading-tight text-center md:text-left'>
-          Book Appointment <br /> With Trusted Doctors
+          Book Appointment.. <br /> With Trusted Doctors
         </p>
 
         <div className='flex flex-col md:flex-row items-center gap-3 text-white text-base md:text-lg font-light'>
