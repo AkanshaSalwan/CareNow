@@ -62,7 +62,7 @@ const addDoctor = async (req, res) => {
 
     try {
 
-        const { name, email, password, speciality, degree, experience, about, fees, address } = req.body
+        const { name, email, password, speciality, degree, experience, about, fees, address, schedule } = req.body
         const imageFile = req.file
 
         // checking for all data to add doctor
@@ -99,6 +99,7 @@ const addDoctor = async (req, res) => {
             about,
             fees,
             address: JSON.parse(address),
+            schedule: schedule ? (typeof schedule === 'string' ? JSON.parse(schedule) : schedule) : undefined,
             date: Date.now()
         }
 
@@ -119,6 +120,134 @@ const allDoctors = async (req, res) => {
         const doctors = await doctorModel.find({}).select('-password')
         res.json({ success: true, doctors })
 
+    } catch (error) {
+        console.log(error)
+        res.json({ success: false, message: error.message })
+    }
+}
+
+// API to update doctor details (admin)
+const updateDoctor = async (req, res) => {
+    try {
+        const {
+            docId,
+            name,
+            email,
+            password,
+            speciality,
+            degree,
+            experience,
+            about,
+            fees,
+            address,
+            available,
+            schedule
+        } = req.body
+
+        if (!docId) {
+            return res.json({ success: false, message: "Missing Doctor Id" })
+        }
+
+        const existingDoctor = await doctorModel.findById(docId)
+        if (!existingDoctor) {
+            return res.json({ success: false, message: "Doctor not found" })
+        }
+
+        const updateData = {}
+
+        if (typeof name === 'string' && name.trim()) updateData.name = name.trim()
+
+        if (typeof email === 'string' && email.trim()) {
+            if (!validator.isEmail(email)) {
+                return res.json({ success: false, message: "Please enter a valid email" })
+            }
+            const emailOwner = await doctorModel.findOne({ email: email.trim() })
+            if (emailOwner && emailOwner._id.toString() !== docId) {
+                return res.json({ success: false, message: "Email already in use" })
+            }
+            updateData.email = email.trim()
+        }
+
+        if (typeof speciality === 'string' && speciality.trim()) updateData.speciality = speciality.trim()
+        if (typeof degree === 'string' && degree.trim()) updateData.degree = degree.trim()
+        if (typeof experience === 'string' && experience.trim()) updateData.experience = experience.trim()
+        if (typeof about === 'string' && about.trim()) updateData.about = about.trim()
+
+        if (fees !== undefined && fees !== null && fees !== '') {
+            const parsedFees = Number(fees)
+            if (Number.isNaN(parsedFees)) {
+                return res.json({ success: false, message: "Invalid fees" })
+            }
+            updateData.fees = parsedFees
+        }
+
+        if (address !== undefined && address !== null && address !== '') {
+            updateData.address = typeof address === 'string' ? JSON.parse(address) : address
+        }
+
+        if (schedule !== undefined && schedule !== null && schedule !== '') {
+            updateData.schedule = typeof schedule === 'string' ? JSON.parse(schedule) : schedule
+        }
+
+        if (available !== undefined) {
+            updateData.available = available === true || available === 'true'
+        }
+
+        if (typeof password === 'string' && password.trim()) {
+            if (password.length < 8) {
+                return res.json({ success: false, message: "Please enter a strong password" })
+            }
+            const salt = await bcrypt.genSalt(10)
+            updateData.password = await bcrypt.hash(password, salt)
+        }
+
+        const imageFile = req.file
+        if (imageFile) {
+            const imageUpload = await cloudinary.uploader.upload(imageFile.path, { resource_type: "image" })
+            updateData.image = imageUpload.secure_url
+        }
+
+        const updatedDoctor = await doctorModel.findByIdAndUpdate(docId, updateData, { new: true }).select('-password')
+        res.json({ success: true, message: 'Doctor Updated', doctor: updatedDoctor })
+
+    } catch (error) {
+        console.log(error)
+        res.json({ success: false, message: error.message })
+    }
+}
+
+// API to remove doctor (admin)
+const removeDoctor = async (req, res) => {
+    try {
+        const { docId } = req.body
+
+        if (!docId) {
+            return res.json({ success: false, message: "Missing Doctor Id" })
+        }
+
+        const existingDoctor = await doctorModel.findById(docId)
+        if (!existingDoctor) {
+            return res.json({ success: false, message: "Doctor not found" })
+        }
+
+        await doctorModel.findByIdAndDelete(docId)
+        res.json({ success: true, message: "Doctor Removed" })
+
+    } catch (error) {
+        console.log(error)
+        res.json({ success: false, message: error.message })
+    }
+}
+
+// API to get doctor details (admin)
+const getDoctorById = async (req, res) => {
+    try {
+        const { docId } = req.params
+        const doctor = await doctorModel.findById(docId).select('-password')
+        if (!doctor) {
+            return res.json({ success: false, message: "Doctor not found" })
+        }
+        res.json({ success: true, doctor })
     } catch (error) {
         console.log(error)
         res.json({ success: false, message: error.message })
@@ -154,5 +283,8 @@ export {
     appointmentCancel,
     addDoctor,
     allDoctors,
+    updateDoctor,
+    removeDoctor,
+    getDoctorById,
     adminDashboard
 }
