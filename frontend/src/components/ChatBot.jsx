@@ -3,6 +3,7 @@ import './ChatBot.css';
 
 const ChatBot = () => {
   const [isOpen, setIsOpen] = useState(false);
+  const [showQuickQuestions, setShowQuickQuestions] = useState(true);
   const [messages, setMessages] = useState([
     {
       text: "Hello! I'm your appointment assistant. How can I help you today?",
@@ -91,19 +92,45 @@ const ChatBot = () => {
             <div ref={messagesEndRef} />
           </div>
 
-          <div className="quick-questions">
-            {commonQuestions.map((question, index) => (
+          {!showQuickQuestions && (
+            <div className="quick-questions-collapsed">
               <button
-                key={index}
-                onClick={() => {
-                  setInputText(question);
-                  handleSend();
-                }}
+                type="button"
+                className="quick-questions-open"
+                onClick={() => setShowQuickQuestions(true)}
               >
-                {question}
+                Show quick questions
               </button>
-            ))}
-          </div>
+            </div>
+          )}
+
+          {showQuickQuestions && (
+            <div className="quick-questions">
+              <div className="quick-questions-header">
+                <span className="quick-questions-title">Quick questions</span>
+                <button
+                  type="button"
+                  className="quick-questions-close"
+                  aria-label="Hide quick questions"
+                  onClick={() => setShowQuickQuestions(false)}
+                >
+                  ×
+                </button>
+              </div>
+
+              {commonQuestions.map((question, index) => (
+                <button
+                  key={index}
+                  onClick={() => {
+                    setInputText(question);
+                    handleSend();
+                  }}
+                >
+                  {question}
+                </button>
+              ))}
+            </div>
+          )}
 
           <div className="chatbot-input">
             <input

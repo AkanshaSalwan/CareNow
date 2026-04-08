@@ -7,7 +7,6 @@ const Navbar = () => {
 
   const navigate = useNavigate()
 
-  const [showMenu, setShowMenu] = useState(false)
   const { token, setToken, userData } = useContext(AppContext)
 
   const logout = () => {
@@ -16,9 +15,21 @@ const Navbar = () => {
     navigate('/login')
   }
 
+  const mobileLinkClass = ({ isActive }) =>
+    `flex flex-col items-center justify-center gap-1 flex-1 py-2 ${isActive ? 'text-[#3ED2D1]' : 'text-gray-600'}`
+
+  const mobileIconClass = ({ isActive }) =>
+    `w-5 h-5 ${isActive ? 'text-[#3ED2D1]' : 'text-gray-500'}`
+
   return (
-    <div className='flex items-center justify-between text-sm h-20 py-4 mb-5 border-b border-b-[#ADADAD]'>
-      <img onClick={() => navigate('/')} className='w-64 h-64 cursor-pointer' src={assets.CareNow} alt="" />
+    <>
+      <div className='flex items-center justify-between text-sm h-20 py-4 mb-5 border-b border-b-[#ADADAD]'>
+        <img
+          onClick={() => navigate('/')}
+          className='w-40 sm:w-52 md:w-64 h-auto cursor-pointer'
+          src={assets.CareNow}
+          alt="CareNow"
+        />
       <ul className='md:flex items-start gap-5  font-medium hidden'>
         <NavLink to='/' >
           <li className='py-1'>HOME</li>
@@ -54,23 +65,65 @@ const Navbar = () => {
             </div>
             : <button onClick={() => navigate('/login')} className='bg-[#3ED2D1] text-white px-8 py-3 rounded-full font-light hidden md:block'>Create account</button>
         }
-        <img onClick={() => setShowMenu(true)} className='w-6 md:hidden' src={assets.menu_icon} alt="" />
-
-        {/* ---- Mobile Menu ---- */}
-        <div className={`md:hidden ${showMenu ? 'fixed w-full' : 'h-0 w-0'} right-0 top-0 bottom-0 z-20 overflow-hidden bg-white transition-all`}>
-          <div className='flex items-center justify-between px-5 py-6'>
-            <img src={assets.logo} className='w-36' alt="" />
-            <img onClick={() => setShowMenu(false)} src={assets.cross_icon} className='w-7' alt="" />
-          </div>
-          <ul className='flex flex-col items-center gap-2 mt-5 px-5 text-lg font-medium'>
-            <NavLink onClick={() => setShowMenu(false)} to='/'><p className='px-4 py-2 rounded full inline-block'>HOME</p></NavLink>
-            <NavLink onClick={() => setShowMenu(false)} to='/doctors' ><p className='px-4 py-2 rounded full inline-block'>ALL DOCTORS</p></NavLink>
-            <NavLink onClick={() => setShowMenu(false)} to='/about' ><p className='px-4 py-2 rounded full inline-block'>ABOUT</p></NavLink>
-            <NavLink onClick={() => setShowMenu(false)} to='/contact' ><p className='px-4 py-2 rounded full inline-block'>CONTACT</p></NavLink>
-          </ul>
-        </div>
       </div>
-    </div>
+      </div>
+
+      {/* ---- Mobile Bottom Nav ---- */}
+      <nav
+        className='md:hidden fixed bottom-0 left-0 right-0 z-30 bg-white border-t border-gray-200'
+        aria-label='Bottom navigation'
+      >
+        <div className='flex items-stretch'>
+          <NavLink to='/' className={mobileLinkClass}>
+            {({ isActive }) => (
+              <>
+                <svg className={mobileIconClass({ isActive })} viewBox='0 0 24 24' fill='none' xmlns='http://www.w3.org/2000/svg'>
+                  <path d='M3 10.5L12 3l9 7.5V21a1 1 0 0 1-1 1h-5v-7H9v7H4a1 1 0 0 1-1-1v-10.5Z' stroke='currentColor' strokeWidth='1.8' strokeLinejoin='round' />
+                </svg>
+                <span className='text-[11px] font-medium'>Home</span>
+              </>
+            )}
+          </NavLink>
+
+          <NavLink to='/doctors' className={mobileLinkClass}>
+            {({ isActive }) => (
+              <>
+                <svg className={mobileIconClass({ isActive })} viewBox='0 0 24 24' fill='none' xmlns='http://www.w3.org/2000/svg'>
+                  <path d='M10 2h4v4h4v4h-4v4h-4v-4H6V6h4V2Z' stroke='currentColor' strokeWidth='1.8' strokeLinejoin='round' />
+                  <path d='M6 22h12a3 3 0 0 0 3-3v-7a5 5 0 0 0-5-5H8a5 5 0 0 0-5 5v7a3 3 0 0 0 3 3Z' stroke='currentColor' strokeWidth='1.8' strokeLinejoin='round' />
+                </svg>
+                <span className='text-[11px] font-medium'>Doctors</span>
+              </>
+            )}
+          </NavLink>
+
+          <NavLink to='/about' className={mobileLinkClass}>
+            {({ isActive }) => (
+              <>
+                <svg className={mobileIconClass({ isActive })} viewBox='0 0 24 24' fill='none' xmlns='http://www.w3.org/2000/svg'>
+                  <path d='M12 22c5.523 0 10-4.477 10-10S17.523 2 12 2 2 6.477 2 12s4.477 10 10 10Z' stroke='currentColor' strokeWidth='1.8' />
+                  <path d='M12 10.5v6' stroke='currentColor' strokeWidth='1.8' strokeLinecap='round' />
+                  <path d='M12 7.5h.01' stroke='currentColor' strokeWidth='2.6' strokeLinecap='round' />
+                </svg>
+                <span className='text-[11px] font-medium'>About</span>
+              </>
+            )}
+          </NavLink>
+
+          <NavLink to='/contact' className={mobileLinkClass}>
+            {({ isActive }) => (
+              <>
+                <svg className={mobileIconClass({ isActive })} viewBox='0 0 24 24' fill='none' xmlns='http://www.w3.org/2000/svg'>
+                  <path d='M4 6a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6Z' stroke='currentColor' strokeWidth='1.8' />
+                  <path d='M4.5 7.5 12 13l7.5-5.5' stroke='currentColor' strokeWidth='1.8' strokeLinejoin='round' />
+                </svg>
+                <span className='text-[11px] font-medium'>Contact</span>
+              </>
+            )}
+          </NavLink>
+        </div>
+      </nav>
+    </>
   )
 }
 
