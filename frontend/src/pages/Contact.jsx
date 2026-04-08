@@ -13,11 +13,23 @@ const Contact = () => {
         <img className='w-full md:max-w-[360px]' src={assets.contact_image} alt="" />
         <div className='flex flex-col justify-center items-start gap-6'>
           <p className=' font-semibold text-lg text-gray-600'>OUR OFFICE</p>
-          <p className=' text-gray-500'>54709 Willms Station <br /> Suite 350, Washington, USA</p>
-          <p className=' text-gray-500'>Tel: (415) 555-0132 <br /> Email: greatstackdev@gmail.com</p>
-          <p className=' font-semibold text-lg text-gray-600'>CAREERS AT PRESCRIPTO</p>
-          <p className=' text-gray-500'>Learn more about our teams and job openings.</p>
-          <button className='border border-black px-8 py-4 text-sm hover:bg-black hover:text-white transition-all duration-500'>Explore Jobs</button>
+          <p className=' text-gray-500'>
+            CareNow Clinics, 2nd Floor <br />
+            MG Road, Bengaluru, Karnataka 560001, India
+          </p>
+          <p className=' text-gray-500'>
+            Tel: +91 80 4XXX XXXX <br />
+            Email: support@carenow.in
+          </p>
+          <p className=' text-gray-500'>
+            Hours: Mon–Sat 9:00 AM – 7:00 PM <br />
+            Sunday: Closed
+          </p>
+          <p className=' font-semibold text-lg text-gray-600'>CAREERS AT CARENOW</p>
+          <p className=' text-gray-500'>Send your resume and portfolio to careers@carenow.in</p>
+          <button className='border border-black px-8 py-4 text-sm hover:bg-black hover:text-white transition-all duration-500'>
+            View Open Roles
+          </button>
         </div>
       </div>
 

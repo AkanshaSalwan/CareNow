@@ -23,7 +23,7 @@ const Navbar = () => {
 
   return (
     <>
-      <div className='flex items-center justify-between text-sm h-20 py-4 mb-5 border-b border-b-[#ADADAD]'>
+      <div className='sticky top-0 z-40 bg-white flex items-center justify-between text-sm h-20 py-4 mb-5 border-b border-b-[#ADADAD]'>
         <img
           onClick={() => navigate('/')}
           className='w-40 sm:w-52 md:w-64 h-auto cursor-pointer'

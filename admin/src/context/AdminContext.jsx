@@ -51,6 +51,42 @@ const AdminContextProvider = (props) => {
         }
     }
 
+    // Update doctor details (server-side)
+    const updateDoctor = async (formData) => {
+        try {
+            const { data } = await axios.post(backendUrl + '/api/admin/update-doctor', formData, {
+                headers: { aToken }
+            })
+            if (data.success) {
+                toast.success(data.message)
+                await getAllDoctors()
+            } else {
+                toast.error(data.message)
+            }
+            return data
+        } catch (error) {
+            toast.error(error.message)
+            return { success: false, message: error.message }
+        }
+    }
+
+    // Remove doctor (server-side)
+    const removeDoctor = async (docId) => {
+        try {
+            const { data } = await axios.post(backendUrl + '/api/admin/remove-doctor', { docId }, { headers: { aToken } })
+            if (data.success) {
+                toast.success(data.message)
+                await getAllDoctors()
+            } else {
+                toast.error(data.message)
+            }
+            return data
+        } catch (error) {
+            toast.error(error.message)
+            return { success: false, message: error.message }
+        }
+    }
+
 
     // Getting all appointment data from Database using API
     const getAllAppointments = async () => {
@@ -116,6 +152,8 @@ const AdminContextProvider = (props) => {
         doctors,
         getAllDoctors,
         changeAvailability,
+        updateDoctor,
+        removeDoctor,
         appointments,
         getAllAppointments,
         getDashData,
